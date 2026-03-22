@@ -1,0 +1,10 @@
+{
+  "folderMonitor": true,
+  "autoClean": true,
+  "desktopNotif": true,
+  "backupOriginals": true,
+  "deleteTemp": true,
+  "periodicScan": true,
+  "periodicScanInterval": 5,
+  "watchedFolders": []
+}

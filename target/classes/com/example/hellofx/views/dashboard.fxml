@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.Group?>
+
+<VBox spacing="12" styleClass="dash-root"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.hellofx.controllers.DashboardController"
+      stylesheets="@../styles.css">
+    <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+
+    <HBox styleClass="hero-image-frame" VBox.vgrow="NEVER" maxHeight="260" minHeight="220">
+
+        <StackPane HBox.hgrow="ALWAYS" alignment="CENTER_LEFT" style="-fx-background-color: #0b0d17;" minHeight="220">
+            <ImageView fitHeight="260" preserveRatio="true" smooth="true">
+                <image><Image url="@hero1.png"/></image>
+            </ImageView>
+        </StackPane>
+
+
+        <VBox spacing="0" alignment="CENTER"
+              minWidth="230" maxWidth="260" prefWidth="245"
+              style="-fx-background-color: #0e1120;
+                 -fx-padding: 24 24 24 20;
+                 -fx-border-color: #1e2235;
+                 -fx-border-width: 0 0 0 1;">
+
+            <VBox spacing="8" style="-fx-padding: 0 0 18 0;">
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <FontIcon iconLiteral="fas-search" iconSize="14" iconColor="#ff4a4a"/>
+                    <Label text="Scan Files"
+                           style="-fx-font-weight: bold; -fx-text-fill: #dde1ef; -fx-font-size: 13px;"/>
+                </HBox>
+                <Label text="Manually scan files to detect sensitive metadata before sharing."
+                       wrapText="true"
+                       style="-fx-text-fill: #6b7280; -fx-font-size: 11px;"/>
+                <Button text="⚡  Run Scan" onAction="#onRunScan" maxWidth="Infinity"
+                        style="-fx-background-color: #ff4a4a;
+                       -fx-text-fill: white;
+                       -fx-font-weight: bold;
+                       -fx-font-size: 12px;
+                       -fx-background-radius: 6;
+                       -fx-padding: 7 0;
+                       -fx-cursor: hand;
+                       -fx-effect: dropshadow(gaussian, #ff4a4a55, 8, 0.4, 0, 0);"/>
+            </VBox>
+
+            <Region prefHeight="1" maxWidth="Infinity" VBox.vgrow="NEVER"
+                    style="-fx-background-color: #1e2235;"/>
+
+
+            <VBox spacing="8" style="-fx-padding: 18 0 0 0;">
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <FontIcon iconLiteral="fas-eye" iconSize="14" iconColor="#8c82c6"/>
+                    <Label text="Monitor Folder"
+                           style="-fx-font-weight: bold; -fx-text-fill: #dde1ef; -fx-font-size: 13px;"/>
+                </HBox>
+                <Label text="Continuously watch selected folders and automatically sanitize files."
+                       wrapText="true"
+                       style="-fx-text-fill: #6b7280; -fx-font-size: 11px;"/>
+                <Button text="👁  Start Monitoring" onAction="#onStartMonitoring" maxWidth="Infinity"
+                        style="-fx-background-color: #1e2235;
+                       -fx-text-fill: #8c82c6;
+                       -fx-font-weight: bold;
+                       -fx-font-size: 12px;
+                       -fx-border-color: #8c82c6;
+                       -fx-border-width: 1;
+                       -fx-border-radius: 6;
+                       -fx-background-radius: 6;
+                       -fx-padding: 7 0;
+                       -fx-cursor: hand;"/>
+            </VBox>
+
+        </VBox>
+    </HBox>
+
+
+    <HBox spacing="12" fillHeight="true">
+
+        <HBox styleClass="dash-card" spacing="20" alignment="CENTER_LEFT"
+              minWidth="300" prefWidth="300" maxWidth="300">
+
+            <StackPane minWidth="110" minHeight="110" prefWidth="110" prefHeight="110">
+                <Group>
+                    <Arc fx:id="arcBg" radiusX="48" radiusY="48" startAngle="-210" length="300"
+                         type="OPEN" strokeWidth="8" stroke="#2a2e40" fill="transparent"
+                         strokeLineCap="ROUND"/>
+                    <Arc fx:id="arcFg" radiusX="48" radiusY="48" startAngle="150" length="-216"
+                         type="OPEN" strokeWidth="8" stroke="#e84545" fill="transparent"
+                         strokeLineCap="ROUND"
+                         style="-fx-effect: dropshadow(gaussian, #e84545, 6, 0.5, 0, 0);"/>
+                </Group>
+                <VBox alignment="CENTER" spacing="1">
+                    <Label fx:id="lblRiskPct" text="0%" styleClass="gauge-pct"/>
+                    <Label text="RISK SCORE" styleClass="gauge-sub"/>
+                </VBox>
+            </StackPane>
+
+            <VBox spacing="10" HBox.hgrow="ALWAYS">
+                <HBox styleClass="badge-critical" alignment="CENTER" spacing="6" maxWidth="115">
+                    <Circle fx:id="circleRiskBadge" radius="5" fill="#e84545"
+                            style="-fx-effect: dropshadow(gaussian, #e84545, 5, 0.9, 0, 0);"/>
+                    <Label fx:id="lblRiskBadge" text="SECURE" styleClass="badge-critical-text"/>
+                </HBox>
+                <Label fx:id="lblRiskDesc" text="No files have been&#10;scanned yet"
+                       styleClass="risk-desc" wrapText="true"/>
+                <Label fx:id="lblLastScan" text="Last scan: Never" styleClass="risk-timestamp"/>
+                <Button fx:id="btnQuickScan" text="⚡  Quick Scan"
+                        styleClass="btn-quick-scan" onAction="#onQuickScan" maxWidth="Infinity"/>
+            </VBox>
+        </HBox>
+
+        <GridPane hgap="12" vgap="12" HBox.hgrow="ALWAYS">
+            <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints vgrow="ALWAYS"/>
+                <RowConstraints vgrow="ALWAYS"/>
+            </rowConstraints>
+
+            <HBox styleClass="dash-card" alignment="CENTER_LEFT" spacing="0"
+                  GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label fx:id="lblFilesScanned" text="0" styleClass="stat-num"/>
+                    <Label text="FILES SCANNED" styleClass="stat-label"/>
+                </VBox>
+                <FontIcon iconLiteral="far-folder-open" iconSize="30" iconColor="#3e4456"/>
+            </HBox>
+
+            <HBox styleClass="dash-card" alignment="CENTER_LEFT" spacing="0"
+                  GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label fx:id="lblFilesCleaned" text="0" styleClass="stat-num stat-num-green"
+                           style="-fx-font-size: 32px;"/>
+                    <Label text="FILES CLEANED" styleClass="stat-label"/>
+                </VBox>
+                <FontIcon iconLiteral="fas-check-circle" iconSize="28" iconColor="#38c96e" opacity="0.4"/>
+            </HBox>
+
+            <HBox styleClass="dash-card" alignment="CENTER_LEFT" spacing="0"
+                  GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label fx:id="lblCriticalThreats" text="0" styleClass="stat-num stat-num-red"
+                           style="-fx-font-size: 32px;"/>
+                    <Label text="CRITICAL THREATS" styleClass="stat-label"/>
+                </VBox>
+                <FontIcon iconLiteral="fas-exclamation-triangle" iconSize="28" iconColor="#3e4456"/>
+            </HBox>
+
+            <HBox styleClass="dash-card" alignment="CENTER_LEFT" spacing="0"
+                  GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <HBox spacing="7" alignment="CENTER_LEFT">
+                        <Circle radius="5" fill="#38c96e"
+                                style="-fx-effect: dropshadow(gaussian, #38c96e, 5, 0.9, 0, 0);"/>
+                        <Label text="ACTIVE" styleClass="stat-num stat-num-green"
+                               style="-fx-font-size: 32px;"/>
+                    </HBox>
+                    <Label text="FOLDER WATCH" styleClass="stat-label"/>
+                </VBox>
+                <FontIcon iconLiteral="far-eye" iconSize="28" iconColor="#3e4456"/>
+            </HBox>
+        </GridPane>
+    </HBox>
+
+</VBox>

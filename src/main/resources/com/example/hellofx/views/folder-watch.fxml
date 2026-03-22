@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<ScrollPane fitToWidth="true" styleClass="terminal-scroll" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hellofx.controllers.FolderWatchController">
+    <VBox fx:id="folderWatchContainer" spacing="20">
+        <padding><javafx.geometry.Insets top="24" right="32" bottom="32" left="32"/></padding>
+
+        <HBox spacing="20" VBox.vgrow="NEVER">
+
+            <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="20" prefWidth="550" minWidth="400">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <FontIcon iconLiteral="fas-eye" iconSize="14" iconColor="#dde1ef"/>
+                    <Label text="Watch Configuration" styleClass="card-title" style="-fx-font-size: 14px;"/>
+                </HBox>
+
+                <VBox spacing="16" style="-fx-padding: 8 0 0 0;">
+                    <VBox spacing="10">
+                        <HBox alignment="CENTER_LEFT" spacing="8">
+                            <Label fx:id="lblFolderCount" text="Watched Folders (0)" style="-fx-font-weight: bold; -fx-text-fill: #dde1ef; -fx-font-size: 13px;"/>
+                        </HBox>
+                        <VBox fx:id="folderListContainer" spacing="6"/>
+                        <HBox>
+                            <Button text="+ Add Folder" onAction="#onAddFolder" style="-fx-background-color: #1e2235; -fx-text-fill: #ff4a4a; -fx-font-weight: bold; -fx-font-size: 12px; -fx-border-color: #ff4a4a; -fx-border-width: 1; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 6 18; -fx-cursor: hand;"/>
+                        </HBox>
+                    </VBox>
+
+                    <HBox spacing="16" alignment="CENTER_LEFT" styleClass="metadata-row">
+                        <VBox HBox.hgrow="ALWAYS" spacing="4">
+                            <Label text="Status" styleClass="metadata-type" style="-fx-font-weight: bold;"/>
+                            <Label fx:id="lblStatusText" text="ACTIVE" styleClass="metadata-value" style="-fx-text-fill: #38c96e; -fx-font-weight: bold; -fx-font-size: 11px;"/>
+                        </VBox>
+                        <StackPane fx:id="toggleStatus" alignment="CENTER_LEFT" maxWidth="36" prefWidth="36" prefHeight="20" style="-fx-cursor: hand;" onMouseClicked="#onToggleStatus">
+                            <Rectangle fx:id="trackStatus" width="36" height="20" arcWidth="20" arcHeight="20" fill="#4a1818" />
+                            <Circle fx:id="thumbStatus" radius="7" fill="#ff4a4a" translateX="21" />
+                        </StackPane>
+                    </HBox>
+
+                    <HBox spacing="16" alignment="CENTER_LEFT" styleClass="metadata-row">
+                        <Label text="Auto Clean on Detection" styleClass="metadata-type" style="-fx-font-weight: bold;" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                        <StackPane fx:id="toggleAutoClean" alignment="CENTER_LEFT" maxWidth="36" prefWidth="36" prefHeight="20" style="-fx-cursor: hand;" onMouseClicked="#onToggleAutoClean">
+                            <Rectangle fx:id="trackAutoClean" width="36" height="20" arcWidth="20" arcHeight="20" fill="#4a1818" />
+                            <Circle fx:id="thumbAutoClean" radius="7" fill="#ff4a4a" translateX="21" />
+                        </StackPane>
+                    </HBox>
+
+                    <HBox spacing="16" alignment="CENTER_LEFT" styleClass="metadata-row">
+                        <Label text="Delete Original After Clean" styleClass="metadata-type" style="-fx-font-weight: bold;" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                        <StackPane fx:id="toggleDelete" alignment="CENTER_LEFT" maxWidth="36" prefWidth="36" prefHeight="20" style="-fx-cursor: hand;" onMouseClicked="#onToggleDelete">
+                            <Rectangle fx:id="trackDelete" width="36" height="20" arcWidth="20" arcHeight="20" fill="#4a1818" />
+                            <Circle fx:id="thumbDelete" radius="7" fill="#ff4a4a" translateX="21" />
+                        </StackPane>
+                    </HBox>
+
+                    <HBox spacing="16" alignment="CENTER_LEFT" styleClass="metadata-row">
+                        <VBox spacing="4" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                            <Label text="Periodic Background Sweep" styleClass="metadata-type" style="-fx-font-weight: bold;"/>
+                            <Label text="Automatically scan watched folders on a timer" style="-fx-text-fill: #6b7280; -fx-font-size: 11px;"/>
+                        </VBox>
+                        <StackPane fx:id="togglePeriodic" alignment="CENTER_LEFT" maxWidth="36" prefWidth="36" prefHeight="20" style="-fx-cursor: hand;" onMouseClicked="#onTogglePeriodic">
+                            <Rectangle fx:id="trackPeriodic" width="36" height="20" arcWidth="20" arcHeight="20" fill="#4a1818" />
+                            <Circle fx:id="thumbPeriodic" radius="7" fill="#ff4a4a" translateX="21" />
+                        </StackPane>
+                    </HBox>
+
+                    <HBox spacing="16" alignment="CENTER_LEFT" styleClass="metadata-row">
+                        <Label text="Background Sweep Interval" styleClass="metadata-type" style="-fx-font-weight: bold;" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                        <ComboBox fx:id="comboInterval" onAction="#onIntervalChanged" style="-fx-background-color: #1a1d2e; -fx-text-fill: #dde1ef; -fx-border-color: #2a2e40; -fx-border-radius: 4;">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="1 Minute" />
+                                    <String fx:value="5 Minutes" />
+                                    <String fx:value="15 Minutes" />
+                                    <String fx:value="30 Minutes" />
+                                    <String fx:value="60 Minutes" />
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                    </HBox>
+                </VBox>
+            </VBox>
+
+            <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="20" prefWidth="500">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <FontIcon iconLiteral="fas-chart-bar" iconSize="16" iconColor="#8c82c6"/>
+                    <Label text="Watch Statistics" styleClass="card-title" style="-fx-font-size: 14px;"/>
+                </HBox>
+
+                <GridPane hgap="16" vgap="16" style="-fx-padding: 8 0 0 0;" HBox.hgrow="ALWAYS">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50" />
+                        <ColumnConstraints percentWidth="50" />
+                    </columnConstraints>
+
+                    <VBox styleClass="stat-box" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <Label fx:id="lblDetected" text="0" styleClass="stat-val"/>
+                        <Label text="DETECTED" styleClass="stat-label"/>
+                    </VBox>
+                    <VBox styleClass="stat-box" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <Label fx:id="lblCleaned" text="0" styleClass="stat-val" style="-fx-text-fill: #38c96e;"/>
+                        <Label text="AUTO CLEANED" styleClass="stat-label"/>
+                    </VBox>
+                    <VBox styleClass="stat-box" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <Label fx:id="lblGpsFound" text="0" styleClass="stat-val" style="-fx-text-fill: #ff4a4a;"/>
+                        <Label text="GPS FOUND" styleClass="stat-label"/>
+                    </VBox>
+                    <VBox styleClass="stat-box" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label fx:id="lblAvgTime" text="0ms" styleClass="stat-val"/>
+                        <Label text="AVG CLEAN TIME" styleClass="stat-label"/>
+                    </VBox>
+                </GridPane>
+            </VBox>
+        </HBox>
+
+        <VBox styleClass="card" VBox.vgrow="ALWAYS" spacing="12">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <FontIcon iconLiteral="fas-terminal" iconSize="14" iconColor="#dde1ef"/>
+                <Label text="Live Activity Log" styleClass="card-title" style="-fx-font-size: 14px;"/>
+            </HBox>
+
+            <ScrollPane fitToWidth="true" vbarPolicy="ALWAYS" styleClass="terminal-scroll">
+                <VBox fx:id="logContainer" spacing="6" styleClass="terminal-container">
+                </VBox>
+            </ScrollPane>
+        </VBox>
+
+    </VBox>
+</ScrollPane>

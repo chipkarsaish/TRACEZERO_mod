@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.geometry.Insets?>
+
+<HBox fx:id="cleanContainer" spacing="20" alignment="TOP_CENTER" stylesheets="@../styles.css"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.hellofx.controllers.CleanSanitizeController">
+
+    <padding><Insets top="24" right="32" bottom="32" left="32"/></padding>
+
+    <VBox styleClass="card" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="24" minWidth="400">
+        <StackPane>
+            <Circle radius="70" fill="transparent" stroke="#ff4a4a" strokeWidth="2" style="-fx-stroke-dash-array: 80 40; -fx-rotate: -45;" />
+            <VBox alignment="CENTER" spacing="8" styleClass="badge-pill-red" style="-fx-background-color: transparent; -fx-padding: 20;">
+                <FontIcon iconLiteral="fas-shield-alt" iconSize="64" iconColor="#ff4a4a" />
+                <Label text="TRACEZERO" style="-fx-font-family: 'Rajdhani'; -fx-font-weight: bold; -fx-text-fill: #ff4a4a; -fx-font-size: 10px; -fx-letter-spacing: 2px;"/>
+            </VBox>
+        </StackPane>
+
+        <VBox alignment="CENTER" spacing="8">
+            <Label fx:id="lblStatusHeader" text="Pending Sanitization" style="-fx-font-family: 'Inter'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
+            <Label text="Selected metadata fields will be" style="-fx-font-family: 'Inter'; -fx-font-size: 12px; -fx-text-fill: #8b92a5;"/>
+            <Label text="permanently stripped" style="-fx-font-family: 'Inter'; -fx-font-size: 12px; -fx-text-fill: #8b92a5;"/>
+        </VBox>
+
+        <Button fx:id="btnCleanNow" onAction="#onCleanNow" text="⚡ CLEAN NOW" styleClass="btn-action"
+                style="-fx-background-color: #ff4a4a; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 32; -fx-font-size: 14px; -fx-background-radius: 6;"/>
+    </VBox>
+
+    <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="16" minWidth="400">
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <FontIcon iconLiteral="fas-crosshairs" iconSize="16" iconColor="#f4a230"/>
+            <Label text="Targeted Metadata" styleClass="card-title" style="-fx-font-size: 15px;"/>
+        </HBox>
+
+        <ListView fx:id="metadataListView" VBox.vgrow="ALWAYS" style="-fx-background-color: #1a222c; -fx-control-inner-background: #1a222c; -fx-text-fill: #8c82c6; -fx-font-family: 'Inter';"/>
+
+        <VBox spacing="12">
+            <HBox alignment="CENTER" spacing="8" style="-fx-background-color: #141f1a; -fx-border-color: #1e3326; -fx-border-width: 1; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 12;">
+                <Circle radius="4" fill="#38c96e" />
+                <Label text="Ready for Complete Sanitization" style="-fx-font-family: 'Inter'; -fx-font-size: 13px; -fx-text-fill: #38c96e; -fx-font-weight: bold;"/>
+            </HBox>
+
+            <Button fx:id="btnDownload" visible="false" text="VIEW FULL REPORT →" style="-fx-background-color: #ff4a4a; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 12; -fx-background-radius: 6;" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+        </VBox>
+    </VBox>
+</HBox>

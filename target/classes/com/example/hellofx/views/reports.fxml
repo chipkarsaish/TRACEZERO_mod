@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.geometry.Insets?>
+
+<SplitPane dividerPositions="0.25" stylesheets="@../styles.css" style="-fx-background-color: transparent; -fx-padding: 0;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hellofx.controllers.ReportsController">
+    <VBox spacing="10" style="-fx-background-color: #1a1614;" minWidth="280" maxWidth="280" SplitPane.resizableWithParent="false">
+        <padding><Insets top="24" right="16" bottom="24" left="16"/></padding>
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <FontIcon iconLiteral="fas-history" iconSize="16" iconColor="#8c82c6"/>
+            <Label text="Scan History" style="-fx-font-size: 16px; -fx-font-family: 'Rajdhani'; -fx-font-weight: bold; -fx-text-fill: #dde1ef;"/>
+        </HBox>
+        
+        <!-- Search Bar -->
+        <HBox alignment="CENTER_LEFT" spacing="8" styleClass="history-search-box">
+            <FontIcon iconLiteral="fas-search" iconSize="12" iconColor="#6b7280"/>
+            <TextField fx:id="searchField" promptText="Search files..." HBox.hgrow="ALWAYS" styleClass="history-search-field"/>
+        </HBox>
+
+        <ListView fx:id="historyList" VBox.vgrow="ALWAYS" styleClass="history-list" style="-fx-background-color: transparent; -fx-border-width: 0;" />
+    </VBox>
+
+    <StackPane>
+        <VBox fx:id="placeholderView" alignment="CENTER" spacing="16" style="-fx-background-color: transparent;">
+            <FontIcon iconLiteral="fas-file-alt" iconSize="64" iconColor="#4b5162"/>
+            <Label text="Select a report from the history list to view details." style="-fx-font-size: 18px; -fx-text-fill: #6b7280; -fx-font-family: 'Inter';"/>
+        </VBox>
+
+        <ScrollPane fx:id="detailsView" fitToWidth="true" styleClass="terminal-scroll" visible="false">
+            <VBox spacing="24" fx:id="reportContainer">
+                <padding><Insets top="24" right="32" bottom="40" left="32"/></padding>
+
+                <VBox styleClass="card" spacing="16">
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <FontIcon iconLiteral="fas-file-alt" iconSize="16" iconColor="#dde1ef"/>
+                        <Label text="TraceZero Forensic Report" styleClass="card-title" style="-fx-font-size: 16px;"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label text="CLEANED" style="-fx-background-color: #38c96e; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 4 12; -fx-background-radius: 12; -fx-font-size: 11px;"/>
+                    </HBox>
+
+                    <GridPane hgap="32" vgap="16">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="50"/>
+                            <ColumnConstraints percentWidth="50"/>
+                        </columnConstraints>
+                        <VBox spacing="12" GridPane.columnIndex="0">
+                            <HBox spacing="10" alignment="CENTER_LEFT"><Label text="File Name:" styleClass="metadata-type" prefWidth="100"/><Label fx:id="lblFileName" text="..." styleClass="metadata-value"/></HBox>
+                            <HBox spacing="10" alignment="CENTER_LEFT"><Label text="File Type:" styleClass="metadata-type" prefWidth="100"/><Label fx:id="lblFileType" text="..." styleClass="metadata-value"/></HBox>
+                            <HBox spacing="10" alignment="CENTER_LEFT"><Label text="File Size:" styleClass="metadata-type" prefWidth="100"/><Label fx:id="lblFileSize" text="..." styleClass="metadata-value"/></HBox>
+                        </VBox>
+                        <VBox spacing="12" GridPane.columnIndex="1">
+                            <HBox spacing="10" alignment="CENTER_LEFT"><Label text="Scan Time:" styleClass="metadata-type" prefWidth="100"/><Label fx:id="lblScanTime" text="..." styleClass="metadata-value"/></HBox>
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="SHA256 Hash:" styleClass="metadata-type" prefWidth="100"/>
+                                <Label fx:id="lblFileHash" text="..." styleClass="metadata-value" style="-fx-font-family: 'Consolas';"/>
+                                <Button styleClass="btn-icon" onAction="#onCopyFileHash"><graphic><FontIcon iconLiteral="far-copy" iconSize="14" iconColor="#8c82c6"/></graphic></Button>
+                            </HBox>
+                        </VBox>
+                    </GridPane>
+                </VBox>
+
+                <HBox spacing="20">
+                    <VBox styleClass="card" alignment="CENTER" spacing="16" minWidth="250">
+                        <Label text="Metadata Exposure Score" styleClass="card-title"/>
+                        <StackPane>
+                            <javafx.scene.Group>
+                                <Arc radiusX="60" radiusY="60" startAngle="150" length="-300" type="OPEN" fill="transparent" stroke="#232736" strokeWidth="12" strokeLineCap="ROUND"/>
+                                <Arc fx:id="arcRiskGauge" radiusX="60" radiusY="60" startAngle="150" length="0" type="OPEN" fill="transparent" stroke="#38c96e" strokeWidth="12" strokeLineCap="ROUND"/>
+                            </javafx.scene.Group>
+                            <VBox alignment="CENTER" spacing="4">
+                                <Label fx:id="lblScore" text="0" style="-fx-font-family: 'Rajdhani'; -fx-font-weight: bold; -fx-font-size: 36px; -fx-text-fill: #38c96e;"/>
+                                <Label text="/ 100" style="-fx-font-family: 'Inter'; -fx-font-size: 10px; -fx-text-fill: #6b7280;"/>
+                            </VBox>
+                        </StackPane>
+                        <Label fx:id="lblRiskLevel" text="Secure" style="-fx-text-fill: #38c96e; -fx-font-weight: bold; -fx-font-size: 14px;"/>
+                    </VBox>
+                    <GridPane hgap="16" vgap="16" HBox.hgrow="ALWAYS">
+                        <columnConstraints><ColumnConstraints percentWidth="50"/><ColumnConstraints percentWidth="50"/></columnConstraints>
+                        <VBox styleClass="stat-box" GridPane.columnIndex="0" GridPane.rowIndex="0"><Label fx:id="lblTotalMetadata" text="0" styleClass="stat-val"/><Label text="TOTAL METADATA DETECTED" styleClass="stat-label"/></VBox>
+                        <VBox styleClass="stat-box" GridPane.columnIndex="1" GridPane.rowIndex="0"><Label fx:id="lblSensitiveMetadata" text="0" styleClass="stat-val" style="-fx-text-fill: #ff4a4a;"/><Label text="SENSITIVE METADATA" styleClass="stat-label"/></VBox>
+                        <VBox styleClass="stat-box" GridPane.columnIndex="0" GridPane.rowIndex="1"><Label fx:id="lblMetadataRemoved" text="0" styleClass="stat-val" style="-fx-text-fill: #38c96e;"/><Label text="METADATA REMOVED" styleClass="stat-label"/></VBox>
+                        <VBox styleClass="stat-box" GridPane.columnIndex="1" GridPane.rowIndex="1"><Label fx:id="lblMetadataRemaining" text="0" styleClass="stat-val" style="-fx-text-fill: #6b7280;"/><Label text="METADATA REMAINING" styleClass="stat-label"/></VBox>
+                    </GridPane>
+                </HBox>
+
+                <HBox spacing="20">
+                    <VBox styleClass="card" spacing="12" minWidth="250" prefWidth="280">
+                        <HBox alignment="CENTER_LEFT" spacing="10"><FontIcon iconLiteral="fas-trash-alt" iconSize="16" iconColor="#38c96e"/><Label text="Removed Metadata" styleClass="card-title"/></HBox>
+                        <VBox fx:id="removedMetadataBox" spacing="8" />
+                    </VBox>
+                    <VBox styleClass="card" spacing="12" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" spacing="10"><FontIcon iconLiteral="fas-exchange-alt" iconSize="16" iconColor="#8c82c6"/><Label text="Comparison" styleClass="card-title"/></HBox>
+                        <Label text="All detected fields have been overwritten with zeroes or stripped entirely." style="-fx-text-fill: #8b92a5; -fx-wrap-text: true;"/>
+                    </VBox>
+                </HBox>
+
+                <HBox spacing="20">
+                    <VBox styleClass="card" spacing="12" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" spacing="10"><FontIcon iconLiteral="fas-sitemap" iconSize="16" iconColor="#8c82c6"/><Label text="File Structure Information" styleClass="card-title"/></HBox>
+                        <GridPane hgap="32" vgap="12">
+                            <columnConstraints><ColumnConstraints percentWidth="50"/><ColumnConstraints percentWidth="50"/></columnConstraints>
+                            <VBox spacing="12" GridPane.columnIndex="0">
+                                <HBox spacing="10" alignment="CENTER_LEFT"><Label text="Page Count / Size:" styleClass="metadata-type" prefWidth="130"/><Label fx:id="lblPageCount" text="Standard" styleClass="metadata-value"/></HBox>
+                                <HBox spacing="10" alignment="CENTER_LEFT"><Label text="Embedded Images:" styleClass="metadata-type" prefWidth="130"/><Label fx:id="lblEmbeddedImages" text="Cleaned" styleClass="metadata-value"/></HBox>
+                            </VBox>
+                            <VBox spacing="12" GridPane.columnIndex="1">
+                                <HBox spacing="10" alignment="CENTER_LEFT"><Label text="Compression Type:" styleClass="metadata-type" prefWidth="130"/><Label fx:id="lblCompression" text="Standard" styleClass="metadata-value"/></HBox>
+                                <HBox spacing="10" alignment="CENTER_LEFT"><Label text="Macros Detected:" styleClass="metadata-type" prefWidth="130"/><Label fx:id="lblMacros" text="0" styleClass="metadata-value" style="-fx-text-fill: #38c96e;"/></HBox>
+                            </VBox>
+                        </GridPane>
+                    </VBox>
+                </HBox>
+
+                <VBox styleClass="card" spacing="12">
+                    <HBox alignment="CENTER_LEFT" spacing="10"><FontIcon iconLiteral="fas-terminal" iconSize="14" iconColor="#dde1ef"/><Label text="Cleaning Process Log" styleClass="card-title"/></HBox>
+                    <VBox fx:id="logBox" spacing="6" styleClass="terminal-container" style="-fx-padding: 12;" />
+                </VBox>
+
+                <HBox spacing="20">
+                    <VBox styleClass="card" spacing="12" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" spacing="10"><FontIcon iconLiteral="fas-shield-alt" iconSize="16" iconColor="#38c96e"/><Label text="File Integrity Check" styleClass="card-title"/><Region HBox.hgrow="ALWAYS"/><Label text="VALID" style="-fx-text-fill: #38c96e; -fx-font-weight: bold;"/></HBox>
+                        <GridPane hgap="16" vgap="12">
+                            <columnConstraints><ColumnConstraints minWidth="100"/><ColumnConstraints hgrow="ALWAYS"/><ColumnConstraints minWidth="30"/></columnConstraints>
+                            <Label text="Original Hash:" styleClass="metadata-type" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                            <Label fx:id="lblOriginalHash" text="..." styleClass="metadata-value" style="-fx-font-family: 'Consolas';" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                            <Label text="Cleaned Hash:" styleClass="metadata-type" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                            <Label fx:id="lblCleanedHash" text="..." styleClass="metadata-value" style="-fx-font-family: 'Consolas';" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        </GridPane>
+                    </VBox>
+                </HBox>
+
+                <HBox spacing="16" alignment="CENTER_RIGHT" style="-fx-padding: 16 0 0 0;">
+                    <Button text="Export JSON" styleClass="btn-secondary" style="-fx-border-color: #4b5162; -fx-text-fill: #dde1ef;" onAction="#onExportJSON">
+                        <graphic><FontIcon iconLiteral="fas-code" iconColor="#dde1ef"/></graphic>
+                    </Button>
+                    <Button text="Export Report" styleClass="btn-primary" onAction="#onExportPDF">
+                        <graphic><FontIcon iconLiteral="fas-file-export" iconColor="#fff"/></graphic>
+                    </Button>
+                    <Button text="Open Cleaned File" styleClass="btn-clean" onAction="#onDownloadCleaned">
+                        <graphic><FontIcon iconLiteral="fas-folder-open" iconColor="#fff"/></graphic>
+                    </Button>
+                </HBox>
+
+            </VBox>
+        </ScrollPane>
+    </StackPane>
+</SplitPane>

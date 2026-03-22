@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+<?import javafx.geometry.*?>
+
+<!-- Use a StackPane root to allow swapping between Drop Zone and Results View -->
+<StackPane styleClass="content-area"
+           xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.example.hellofx.controllers.ScanFilesController"
+           stylesheets="@../styles.css">
+
+    <!-- ══ STATE 1: Drop Zone ══════════════════════════════════════════════ -->
+    <VBox fx:id="dropZoneContainer" alignment="CENTER" spacing="0">
+        <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
+
+        <VBox fx:id="dropZone" styleClass="drop-zone" alignment="CENTER" spacing="16"
+              maxWidth="Infinity" prefHeight="350" VBox.vgrow="NEVER"
+              onDragOver="#onDragOver"
+              onDragDropped="#onDragDropped"
+              onDragExited="#onDragExited">
+            <padding><Insets top="48" right="48" bottom="48" left="48"/></padding>
+
+            <StackPane styleClass="upload-icon-box" minWidth="64" minHeight="64"
+                       maxWidth="64" maxHeight="64">
+                <FontIcon iconLiteral="fas-arrow-up" iconSize="24" iconColor="#e84545"/>
+            </StackPane>
+
+            <Label text="DROP FILES HERE TO BEGIN EXTRACTION"
+                   styleClass="drop-zone-title"/>
+
+            <HBox alignment="CENTER" spacing="10">
+                <Line startX="0" endX="60" stroke="#2e3245" strokeWidth="1"/>
+                <Label text="or" styleClass="drop-zone-or"/>
+                <Line startX="0" endX="60" stroke="#2e3245" strokeWidth="1"/>
+            </HBox>
+
+            <Button fx:id="btnBrowse" text="Browse Files"
+                    styleClass="btn-browse" onAction="#onBrowseFiles"/>
+
+            <Label text="PDF · DOCX · JPG · PNG · MP4 · ZIP"
+                   styleClass="drop-zone-hint"
+                   style="-fx-font-size: 14px; -fx-text-fill: #8c82c6; -fx-font-weight: bold;"/>
+        </VBox>
+
+        <!-- Loading spinner while scanning (optional/future) -->
+        <VBox fx:id="scanProgressBox" alignment="CENTER" spacing="16" visible="false" managed="false">
+            <padding><Insets top="32"/></padding>
+            <ProgressIndicator prefWidth="48" prefHeight="48" style="-fx-progress-color: #e84545;" />
+            <Label text="Extracting Metadata..." style="-fx-text-fill: #dde1ef; -fx-font-family: 'Inter';"/>
+        </VBox>
+    </VBox>
+
+    <!-- ══ STATE 2: Scan Results ═══════════════════════════════════════════ -->
+    <HBox fx:id="resultsContainer" spacing="20" visible="false" managed="false" alignment="TOP_LEFT">
+        <padding><Insets top="24" right="32" bottom="32" left="32"/></padding>
+
+        <!-- ── Left Column: Loaded Files ──────────────────────────── -->
+        <VBox spacing="16" styleClass="card" minWidth="280" prefWidth="280">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <FontIcon iconLiteral="fas-folder" iconSize="16" iconColor="#f4a230"/>
+                <Label text="Loaded Files" styleClass="card-title" style="-fx-font-size: 15px;"/>
+            </HBox>
+
+            <VBox fx:id="loadedFilesList" spacing="8">
+                <!-- Active file item -->
+                <HBox spacing="12" alignment="CENTER_LEFT" styleClass="file-list-item-active">
+                    <FontIcon iconLiteral="fas-file-image" iconSize="16" iconColor="#6b7280"/>
+                    <Label fx:id="lblSidebarFileName" text="hero.png" style="-fx-text-fill: #dde1ef; -fx-font-family: 'Inter';"/>
+                </HBox>
+            </VBox>
+        </VBox>
+
+        <!-- ── Right Column: Metadata X-Ray ───────────────────────── -->
+        <VBox spacing="0" styleClass="card" HBox.hgrow="ALWAYS">
+            <!-- Header Row -->
+            <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 0 0 20 0;">
+                <FontIcon iconLiteral="fas-search" iconSize="16" iconColor="#38b6d8"/>
+                <Label text="Metadata X-Ray" styleClass="card-title" style="-fx-font-size: 15px;" HBox.hgrow="ALWAYS"/>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="btnCleanAll" onAction="#onCleanAllClick" text="Clean All →" styleClass="btn-browse" style="-fx-padding: 6 16; -fx-font-size: 12px;"/>
+            </HBox>
+
+            <!-- Table Header -->
+            <HBox spacing="16" alignment="CENTER_LEFT" styleClass="metadata-header">
+                <Label text="TYPE" styleClass="table-header" minWidth="150" prefWidth="200"/>
+                <Label text="VALUE" styleClass="table-header" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+            </HBox>
+
+            <!-- Table Rows (Wrapped in ScrollPane for large datasets) -->
+            <ScrollPane fitToWidth="true" styleClass="terminal-scroll" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent; -fx-background: transparent;">
+                <VBox fx:id="metadataTableRows" spacing="0">
+                    <!-- GPS Row -->
+                    <HBox spacing="16" alignment="CENTER_LEFT" styleClass="metadata-row">
+                        <Label text="GPS Coordinates" styleClass="metadata-type" minWidth="150" prefWidth="200"/>
+                        <Label text="19.07°N 72.87°E" styleClass="metadata-value" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    </HBox>
+
+                    <!-- Email Row -->
+                    <HBox spacing="16" alignment="CENTER_LEFT" styleClass="metadata-row">
+                        <Label text="Email Address" styleClass="metadata-type" minWidth="150" prefWidth="200"/>
+                        <Label text="user@private.com" styleClass="metadata-value" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    </HBox>
+
+                    <!-- Author Row -->
+                    <HBox spacing="16" alignment="CENTER_LEFT" styleClass="metadata-row">
+                        <Label text="Author Name" styleClass="metadata-type" minWidth="150" prefWidth="200"/>
+                        <Label text="Sandesh Chipkar" styleClass="metadata-value" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    </HBox>
+
+                    <!-- Device Row -->
+                    <HBox spacing="16" alignment="CENTER_LEFT" styleClass="metadata-row">
+                        <Label text="Device Model" styleClass="metadata-type" minWidth="150" prefWidth="200"/>
+                        <Label text="iPhone 14 Pro" styleClass="metadata-value" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    </HBox>
+
+                    <!-- Software Row -->
+                    <HBox spacing="16" alignment="CENTER_LEFT" styleClass="metadata-row">
+                        <Label text="Software" styleClass="metadata-type" minWidth="150" prefWidth="200"/>
+                        <Label text="Adobe Photoshop 25.0" styleClass="metadata-value" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    </HBox>
+
+                    <!-- Creation Date -->
+                    <HBox spacing="16" alignment="CENTER_LEFT" styleClass="metadata-row">
+                        <Label text="Creation Date" styleClass="metadata-type" minWidth="150" prefWidth="200"/>
+                        <Label text="2024-02-14 09:22" styleClass="metadata-value" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    </HBox>
+                </VBox>
+            </ScrollPane>
+
+            <!-- Bottom Spacer before Risk Score -->
+            <Region VBox.vgrow="ALWAYS" minHeight="16"/>
+
+            <!-- Risk Score Footer -->
+            <HBox spacing="16" alignment="CENTER_LEFT" style="-fx-padding: 16 0 0 0;">
+                <Label text="Metadata Risk Score" styleClass="risk-bar-label" minWidth="150" prefWidth="200"/>
+                <ProgressBar progress="0.72" HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="progress-bar progress-bar-red" style="-fx-pref-height: 6;"/>
+                <Label text="72/100" style="-fx-font-family: 'Rajdhani'; -fx-font-weight: bold; -fx-text-fill: #e84545;"/>
+            </HBox>
+
+        </VBox>
+
+    </HBox>
+</StackPane>

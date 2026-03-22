@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane fitToWidth="true" styleClass="terminal-scroll" stylesheets="@../styles.css"
+            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.hellofx.controllers.SettingsController">
+
+    <VBox spacing="20">
+        <padding><Insets top="24" right="32" bottom="40" left="32"/></padding>
+
+        <HBox alignment="CENTER_LEFT" spacing="12">
+            <FontIcon iconLiteral="fas-cog" iconSize="20" iconColor="#8c82c6"/>
+            <Label text="TraceZero Settings" style="-fx-font-family: 'Rajdhani'; -fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #dde1ef;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="Local Engine Active" style="-fx-text-fill: #38c96e; -fx-font-weight: bold;"/>
+        </HBox>
+
+        <HBox spacing="20">
+
+            <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="18">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <FontIcon iconLiteral="fas-robot" iconSize="16" iconColor="#f4a230"/>
+                    <Label text="Automation Rules" styleClass="card-title"/>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" spacing="12" styleClass="metadata-row">
+                    <VBox HBox.hgrow="ALWAYS" spacing="3">
+                        <Label text="Background Folder Watcher" style="-fx-font-weight: bold; -fx-text-fill: #dde1ef; -fx-font-size: 13px;"/>
+                        <Label text="Continuously scan the Downloads folder for new files." style="-fx-text-fill: #6b7280; -fx-font-size: 11px;"/>
+                    </VBox>
+                    <StackPane onMouseClicked="#onToggleFolderMonitor" alignment="CENTER_LEFT" maxWidth="36" prefWidth="36" prefHeight="20" style="-fx-cursor: hand;">
+                        <Rectangle fx:id="trackFolderMonitor" width="36" height="20" arcWidth="20" arcHeight="20" fill="#4a1818"/>
+                        <Circle fx:id="thumbFolderMonitor" radius="7" fill="#ff4a4a" translateX="21"/>
+                    </StackPane>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" spacing="12" styleClass="metadata-row">
+                    <VBox HBox.hgrow="ALWAYS" spacing="3">
+                        <Label text="Auto-Clean on Dashboard Drop" style="-fx-font-weight: bold; -fx-text-fill: #dde1ef; -fx-font-size: 13px;"/>
+                        <Label text="Skip the review screen and immediately sanitize dropped files." style="-fx-text-fill: #6b7280; -fx-font-size: 11px;"/>
+                    </VBox>
+                    <StackPane onMouseClicked="#onToggleAutoClean" alignment="CENTER_LEFT" maxWidth="36" prefWidth="36" prefHeight="20" style="-fx-cursor: hand;">
+                        <Rectangle fx:id="trackAutoClean" width="36" height="20" arcWidth="20" arcHeight="20" fill="#2a2e40"/>
+                        <Circle fx:id="thumbAutoClean" radius="7" fill="#6b7280" translateX="3"/>
+                    </StackPane>
+                </HBox>
+            </VBox>
+
+            <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="18">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <FontIcon iconLiteral="fas-desktop" iconSize="16" iconColor="#38c96e"/>
+                    <Label text="System Integration" styleClass="card-title"/>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" spacing="12" styleClass="metadata-row">
+                    <VBox HBox.hgrow="ALWAYS" spacing="3">
+                        <Label text="OS Desktop Notifications" style="-fx-font-weight: bold; -fx-text-fill: #dde1ef; -fx-font-size: 13px;"/>
+                        <Label text="Show Windows/Mac popups when background files are cleaned." style="-fx-text-fill: #6b7280; -fx-font-size: 11px;"/>
+                    </VBox>
+                    <StackPane onMouseClicked="#onToggleDesktopNotif" alignment="CENTER_LEFT" maxWidth="36" prefWidth="36" prefHeight="20" style="-fx-cursor: hand;">
+                        <Rectangle fx:id="trackDesktopNotif" width="36" height="20" arcWidth="20" arcHeight="20" fill="#4a1818"/>
+                        <Circle fx:id="thumbDesktopNotif" radius="7" fill="#ff4a4a" translateX="21"/>
+                    </StackPane>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" spacing="12" styleClass="metadata-row">
+                    <VBox HBox.hgrow="ALWAYS" spacing="3">
+                        <Label text="Keep Original Files (Backup)" style="-fx-font-weight: bold; -fx-text-fill: #dde1ef; -fx-font-size: 13px;"/>
+                        <Label text="Save output as '_cleaned' instead of overwriting the original." style="-fx-text-fill: #6b7280; -fx-font-size: 11px;"/>
+                    </VBox>
+                    <StackPane onMouseClicked="#onToggleBackup" alignment="CENTER_LEFT" maxWidth="36" prefWidth="36" prefHeight="20" style="-fx-cursor: hand;">
+                        <Rectangle fx:id="trackBackup" width="36" height="20" arcWidth="20" arcHeight="20" fill="#4a1818"/>
+                        <Circle fx:id="thumbBackup" radius="7" fill="#ff4a4a" translateX="21"/>
+                    </StackPane>
+                </HBox>
+            </VBox>
+        </HBox>
+
+        <HBox spacing="20">
+
+            <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="16">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <FontIcon iconLiteral="fas-palette" iconSize="16" iconColor="#8c82c6"/>
+                    <Label text="Interface Theme" styleClass="card-title"/>
+                </HBox>
+
+                <HBox spacing="16">
+                    <VBox styleClass="theme-card" onMouseClicked="#onSelectDarkTactical" alignment="CENTER" spacing="10" prefWidth="120" prefHeight="90" style="-fx-cursor: hand;">
+                        <HBox spacing="5" alignment="CENTER">
+                            <Rectangle width="16" height="16" arcWidth="4" arcHeight="4" fill="#0b0d13"/>
+                            <Rectangle width="16" height="16" arcWidth="4" arcHeight="4" fill="#232736"/>
+                            <Rectangle width="16" height="16" arcWidth="4" arcHeight="4" fill="#ff4a4a"/>
+                        </HBox>
+                        <Label text="Dark Tactical" style="-fx-text-fill: #dde1ef; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+                    </VBox>
+
+                    <VBox styleClass="theme-card" onMouseClicked="#onSelectRedAlert" alignment="CENTER" spacing="10" prefWidth="120" prefHeight="90" style="-fx-cursor: hand;">
+                        <HBox spacing="5" alignment="CENTER">
+                            <Rectangle width="16" height="16" arcWidth="4" arcHeight="4" fill="#1a0505"/>
+                            <Rectangle width="16" height="16" arcWidth="4" arcHeight="4" fill="#3d0a0a"/>
+                            <Rectangle width="16" height="16" arcWidth="4" arcHeight="4" fill="#ff2222"/>
+                        </HBox>
+                        <Label text="Red Alert" style="-fx-text-fill: #dde1ef; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="16" alignment="CENTER">
+                <HBox alignment="CENTER" spacing="10">
+                    <FontIcon iconLiteral="fas-shield-alt" iconSize="40" iconColor="#8c82c6"/>
+                </HBox>
+                <Label text="TraceZero Core" style="-fx-font-family: 'Rajdhani'; -fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #dde1ef;"/>
+
+                <HBox alignment="CENTER">
+                    <Label text="✦  Fully Offline Pipeline  ✦" style="-fx-background-color: #0d2218; -fx-text-fill: #38c96e; -fx-font-weight: bold; -fx-font-size: 11px; -fx-padding: 5 16; -fx-background-radius: 20; -fx-border-color: #38c96e; -fx-border-radius: 20; -fx-border-width: 1;"/>
+                    <Label text="Version 1.0.0" style="-fx-background-color: #0d2218; -fx-text-fill: #38c96e; -fx-font-weight: bold; -fx-font-size: 11px; -fx-padding: 5 16; -fx-background-radius: 20; -fx-border-color: #38c96e; -fx-border-radius: 20; -fx-border-width: 1;"/>
+
+                </HBox>
+            </VBox>
+        </HBox>
+    </VBox>
+</ScrollPane>
